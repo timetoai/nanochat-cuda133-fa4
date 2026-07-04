@@ -3,7 +3,8 @@ name = "nanochat"
 version = "0.1.0"
 description = "the minimal full-stack ChatGPT clone"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11, <3.14"
+
 dependencies = [
     "datasets>=4.0.0",
     "fastapi>=0.117.1",
@@ -12,10 +13,10 @@ dependencies = [
     "rustbpe>=0.1.0",
     "tiktoken>=0.11.0",
     "tokenizers>=0.22.0",
-    "torch>=2.4.0",
+    "torch>=2.12.0",
     "uvicorn>=0.36.0",
     "wandb>=0.21.3",
-    "flash-attn-4[cu13]",
+    "flash-attn-4[cu13]>=4.0.0b20",
 ]
 
 [dependency-groups]
@@ -36,11 +37,11 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 
-# target torch to cuda 13.3 or CPU
+# target torch to cuda 13.2 or CPU
 [tool.uv.sources]
 torch = [
     { index = "pytorch-cpu", extra = "cpu" },
-    { index = "pytorch-cu133", extra = "gpu" },
+    { index = "pytorch-cu132", extra = "gpu" },
 ]
 
 [[tool.uv.index]]
@@ -49,21 +50,24 @@ url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [[tool.uv.index]]
-name = "pytorch-cu133"
-url = "https://download.pytorch.org/whl/cu133"
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
 explicit = true
 
 [project.optional-dependencies]
 cpu = [
     "setuptools>=65.0.0",
-    "torch>=2.4.0",
+    "torch>=2.12.0",
 ]
 gpu = [
-    "torch>=2.4.0",
+    "torch>=2.12.0",
 ]
 
 [tool.uv]
 default-groups = []
+override-dependencies = [
+    "nvidia-cutlass-dsl>=4.5.2",
+]
 conflicts = [
     [
         { extra = "cpu" },

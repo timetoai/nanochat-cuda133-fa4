@@ -2,7 +2,7 @@
 Unified Flash Attention interface with Flash Attention 4 support.
 """
 import torch
-from flash_attn.cute import flash_attn_func
+from torch.nn.attention.flex_attention import flex_attention
 
 # =============================================================================
 # Public API: Same interface as FA3/FA4
@@ -30,7 +30,7 @@ def flash_attn_func(q, k, v, causal=False, window_size=(-1, -1)):
     # If the user provides a window_size, we might need to handle it.
     # However, for a basic rewrite to FA4, we'll implement the standard func.
     
-    return flash_attn_func(q, k, v, causal=causal)
+    return flex_attention(q, k, v, causal=causal)
 
 
 def flash_attn_with_kvcache(q, k_cache, v_cache, k=None, v=None, cache_seqlens=None,
